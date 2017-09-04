@@ -1,0 +1,42 @@
+{
+  "name": "tvoip",
+  "version": "1.0.0",
+  "description": "Terminal-based P2P VoIP communication",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-requirements": "sudo apt-get update && apt-get install libasound2-dev alsa-base alsa-utils"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/T-vK/tvoip.git"
+  },
+  "keywords": [
+    "terminal",
+    "P2P",
+    "VoIP",
+    "LAN",
+    "TeamSpeak",
+    "Skype",
+    "console",
+    "bash",
+    "nodejs",
+    "voice",
+    "audio",
+    "call",
+    "talk",
+    "chat",
+    "communication"
+  ],
+  "author": "T-vK",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/T-vK/tvoip/issues"
+  },
+  "homepage": "https://github.com/T-vK/tvoip#readme",
+  "dependencies": {
+    "commander": "^2.11.0",
+    "mic": "^2.1.2",
+    "speaker": "^0.4.0"
+  }
+}
