@@ -17,7 +17,7 @@ console.log('Connect-hosts: ' + program.connect)
 console.log('Listen-hosts: ' + program.listen)
 console.log('Port: ' + program.port)
 
-const mode = (typeof program.connect === undefined ? 'listen' : 'connect')
+const mode = !program.connect ? 'listen' : 'connect'
 
 const micInstance = mic({
     rate: '16000',
@@ -50,7 +50,7 @@ if (mode === 'listen') {
     })
 } else {
     const client = new net.Socket()
-    client.connect(program.port, {host: program.hosts[0], port: program.port}, ()=>{
+    client.connect(program.port, {host: program.listen[0], port: program.port}, ()=>{
         console.log('Client: Connected')
         micInputStream.pipe(client)
         client.pipe(speakerInstance)
