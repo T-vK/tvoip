@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install-requirements": "sudo apt-get update && sufo apt-get install libasound2-dev alsa-base alsa-utils",
-    "test-audio": "arecord -D hw:1,0 -f S16_LE | aplay -D plughw:CARD=1,DEV=0"
+    "apt-install-alsa": "sudo apt-get update && sudo apt-get install libasound2-dev alsa-base alsa-utils",
+    "alsa-test-1": "arecord -D hw:1,0 -f S16_LE | aplay -D plughw:CARD=1,DEV=0",
+    "alsa-test-2": "arecord -D hw:0,0 -f S16_LE -r 44100 -c 2 | aplay -D plughw:CARD=0,DEV=0"
   },
   "repository": {
     "type": "git",
