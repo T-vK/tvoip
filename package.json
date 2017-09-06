@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "apt-install-alsa": "sudo apt-get update && sudo apt-get install libasound2-dev alsa-base alsa-utils",
     "alsa-test-1": "arecord -D hw:1,0 -f S16_LE -r 44100 -c 1 | aplay -D plughw:CARD=1,DEV=0",
-    "alsa-test-2": "arecord -D hw:0,0 -f S16_LE -r 44100 -c 2 | aplay -D plughw:CARD=0,DEV=0"
+    "alsa-test-2": "arecord -D hw:0,0 -f S16_LE -r 44100 -c 2 | aplay -D plughw:CARD=0,DEV=0",
+    "postinstall":"cd node_modules/speaker && npm i"
   },
   "repository": {
     "type": "git",
@@ -38,7 +39,6 @@
   "homepage": "https://github.com/T-vK/tvoip#readme",
   "dependencies": {
     "commander": "^2.11.0",
-    "mic": "^2.1.2",
-    "speaker": "^0.4.0"
+    "mic": "^2.1.2"
   }
 }

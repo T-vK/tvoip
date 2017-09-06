@@ -2,6 +2,15 @@
 
 ## This is a work-in-progress. It is not functional as of now.
 
+- [x] Get a microphone input stream
+- [x] Get a custom version of the `speaker` module which allows specifiying the output device. ([See here](https://github.com/T-vK/node-speaker/tree/select-audio-device))
+- [x] Get a speaker output stream
+- [x] Pipe a microphone input stream the the speaker output 
+    - [x] On Ubuntu 16.04 LTS
+    - [ ] On Raspbian stretch
+    - [ ] On Fedora 26
+- [ ] Pipe a microphone input stream over the network into another node process and pipe it from there to a speaker 
+
 ## Description
 tvoip is a simple terminal-based P2P VoIP application. Unlike Skype or similar applications:
 
@@ -9,6 +18,30 @@ tvoip is a simple terminal-based P2P VoIP application. Unlike Skype or similar a
  - does not require a server, an account or even the Internet in general
  - does not come with a GUI
  - and is completely controlled through your terminal/console
+
+## Usage
+
+```
+  Usage: node index.js [options]
+
+
+  Options:
+
+    -V, --version               output the version number
+    -c, --connect <host:port>   Connect to a host, (Supports IP:port and hostname:port.)
+    -l, --listen <port>         Automatically accept connections on this port.
+    -i, --input [device-name]   Input device, (Leave empty to use the default recording device.)
+    -o, --output [device-name]  Output device, (Leave empty to use the default playback device.)
+    -h, --help                  output usage information
+
+  Examples:
+
+    node index.js --listen 3333 --input hw:0,0 --output hw:1,1
+    node index.js --connect 192.168.1.101:3333 --input hw:0,0 --output hw:1,1
+    
+```
+(The format for the input/output device comes from ALSA. Please refer to `arecord` and `aplay` and this [stackoverflow question](https://superuser.com/questions/53957/what-do-alsa-devices-like-hw0-0-mean-how-do-i-figure-out-which-to-use).)
+
 
 ## Installation
 
@@ -27,4 +60,12 @@ You will need SoX. Please go here: [SoX](https://sourceforge.net/projects/sox/fi
 ### Actual Installation of tvoip
 
  - First you need to install a recent version of [NodeJS](https://nodejs.org/en/download/). 
- - Then you can run `npm i -g tvoip`.
+ - Secondly you need git. [You can get it here](https://git-scm.com/downloads)
+ - Now, from your terminal/command line:
+    - Clone this repository recursively: `git clone --recursive https://github.com/T-vK/tvoip.git`
+    - Enter the project's directory: `cd tvoip`
+    - Install and compile the dependencies: `npm i`
+
+### Questions, Feature requests, Pull Requests, etc
+
+Please open an issue [right here](https://github.com/T-vK/tvoip/issues) on Github.
