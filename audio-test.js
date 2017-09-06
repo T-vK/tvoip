@@ -14,7 +14,7 @@ const micInstance = mic({ // arecord -D hw:0,0 -f S16_LE -r 44100 -c 2
 const micInputStream = micInstance.getAudioStream()
 
 const speakerInstance = new Speaker({ // | aplay -D plughw:CARD=0,DEV=0
-    channels: 2,
+    channels: 1,
     bitDepth: 16,
     sampleRate: 44100,
     signed: true,
