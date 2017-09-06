@@ -11,8 +11,7 @@ program
   .option('-l, --listen <port>', 'Automatically accept connections on this port.')
   .option('-i, --input [device-name]', 'Input device, (Leave empty to use the default recording device.)')
   .option('-o, --output [device-name]', 'Output device, (Leave empty to use the default playback device.)')
-  .option('-a, --mic-channels <count>', 'Number of channels 1=mono; 2=stereo (Leave empty to use 1.)',1)
-  .option('-b, --speaker-channels <count>', 'Number of channels 1=mono; 2=stereo (Leave empty to use 2.)',b=>parseInt(b),2)
+  .option('-a, --channels [count]', 'Number of channels 1=mono; 2=stereo (Leave empty to use 1.)',1)
   //.option('-s, --speaker-enabled', 'Speaker enabled initially. (true or false)', true)
   //.option('-m, --microphone-enabled', 'Microphone enabled initially. (true or false)', true)
   .parse(process.argv)
@@ -33,8 +32,6 @@ let speakerConfig = { // | aplay -D plughw:NVidia,7
 }
 if (program.output)
     speakerConfig.device = program.output
-if (program['mic-channels'])
-    speakerConfig.device = program['mic-channels']
 
 let micConfig = {       // arecord -D hw:0,0 -f S16_LE -r 44100 -c 2
     //device: program.input,    // -D hw:0,0
@@ -47,47 +44,45 @@ let micConfig = {       // arecord -D hw:0,0 -f S16_LE -r 44100 -c 2
 }
 if (program.input)
     micConfig.device = program.input
-if (program['speaker-channels'])
-    speakerConfig.device = program['speaker-channels']
 
-const micInstance = mic(micConfig)
-const micInputStream = micInstance.getAudioStream()
-const speakerInstance = new Speaker(speakerConfig)
+//const micInstance = mic(micConfig)
+//const micInputStream = micInstance.getAudioStream()
+//const speakerInstance = new Speaker(speakerConfig)
 
-speakerInstance.on('open', ()=>{
-    console.log("Speaker received stuff")
-})
-
-//micInputStream.on('data', data => {
-//    console.log("Recieved Input Stream: " + data.length)
-//})
-micInputStream.on('error', err => {
-    cosole.log("Error in Input Stream: " + err)
-})
 
 console.log('Mode: ' + mode)
 
 if (mode === 'listen') {
+    const speakerInstance = new Speaker(speakerConfig)
+    speakerInstance.on('open', ()=>{
+        console.log("Speaker received stuff")
+    })
+    
     const server = net.createServer(socket=>{
+        //micInputStream.pipe(socket) 
+        //socket.pipe(speakerInstance)
     })
     server.on('error', err => {
         throw err
     })
     server.on('connection', socket => {
         console.log('A client has connected.')
-        micInputStream.pipe(socket) 
         socket.pipe(speakerInstance)
-        micInstance.start()
     })
     server.listen(program.listen, ()=>{
         console.log('Server is listening')
     })
 } else {
+    const micInstance = mic(micConfig)
+    const micInputStream = micInstance.getAudioStream()
+    
     const client = new net.Socket()
     client.connect({host: program.connect.split(':')[0], port: program.connect.split(':')[1]}, ()=>{
         console.log('Client connected')
         micInputStream.pipe(client)
-        client.pipe(speakerInstance)
+        micInputStream.on('error', err => {
+            cosole.log("Error in Input Stream: " + err)
+        })
         micInstance.start()
     })
 }
