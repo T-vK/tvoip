@@ -28,12 +28,14 @@ tvoip is a simple terminal-based P2P VoIP application. Unlike Skype or similar a
 
   Options:
 
-    -V, --version               output the version number
-    -c, --connect <host:port>   Connect to a host, (Supports IP:port and hostname:port.)
-    -l, --listen <port>         Automatically accept connections on this port.
-    -i, --input [device-name]   Input device, (Leave empty to use the default recording device.)
-    -o, --output [device-name]  Output device, (Leave empty to use the default playback device.)
-    -h, --help                  output usage information
+    -V, --version                   output the version number
+    -c, --connect <host:port>       Connect to a host, (Supports IP:port and hostname:port.)
+    -l, --listen <port>             Automatically accept connections on this port.
+    -i, --input [device-name]       Input device, (Leave empty to use the default recording device.)
+    -o, --output [device-name]      Output device, (Leave empty to use the default playback device.)
+    -a, --mic-channels <count>      Number of channels 1=mono; 2=stereo (Leave empty to use 1.)
+    -b, --speaker-channels <count>  Number of channels 1=mono; 2=stereo (Leave empty to use 2.)
+    -h, --help                      output usage information
 
   Examples:
 
