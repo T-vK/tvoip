@@ -1,0 +1,3 @@
+[submodule "node_modules/speaker"]
+	path = node_modules/speaker
+	url = https://github.com/T-vK/node-speaker.git

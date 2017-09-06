@@ -1,1 +1,4 @@
-node_modules
+!node_modules
+node_modules/*
+!node_modukes/speaker
+!node_modukes/speaker/*
