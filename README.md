@@ -8,7 +8,7 @@
 - [x] Pipe a microphone input stream the the speaker output 
     - [x] On Ubuntu 16.04 LTS
     - [ ] On Raspbian stretch
-    - [ ] On Fedora 26
+    - [x] On Fedora 26
 - [x] Pipe a microphone input stream over the network into another node process and pipe it from there to a speaker 
 - [ ] (Probably works; can't test yet) The above + the other way around (send+receive audio on both nodes at the same time)
    
