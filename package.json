@@ -9,7 +9,8 @@
     "alsa-test-1": "arecord -D hw:1,0 -f S16_LE -r 44100 -c 1 | aplay -D plughw:CARD=1,DEV=0",
     "alsa-test-2": "arecord -D hw:0,0 -f S16_LE -r 44100 -c 2 | aplay -D plughw:CARD=0,DEV=0",
     "alsa-test-3": "arecord -D hw:0,1 -f S16_LE -r 44100 -c 2 | aplay -D plughw:CARD=0,DEV=1",
-    "postinstall":"rm -rf node_modules/speaker; cp -rf node-speaker node-cd node_modules/speaker && cd node_modules/speaker && npm i"
+    "alsa-test-3": "arecord -D hw:1,0 -f S16_LE -r 44100 -c 1 | aplay -D plughw:1,0 -c 2",
+    "postinstall": "rm -rf ./node_modules/speaker; mkdir ./node_modules/speaker && cp -rf ./node-speaker/* ./node_modules/speaker && cd ./node_modules/speaker && npm i"
   },
   "repository": {
     "type": "git",
