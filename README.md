@@ -48,7 +48,7 @@ tvoip is a simple terminal-based P2P VoIP application. Unlike Skype or similar a
 
 ## Installation
 
-### Dependencies
+### Dependencies (for the audio backend)
 
 #### If you are on Linux:
 You will need ALSA. The packages are usually called `libasound2-dev`, `alsa-base` and `alsa-utils`.  
@@ -60,15 +60,19 @@ You will need SoX. Please go here: [SoX](https://sourceforge.net/projects/sox/fi
 #### If you are on Windows:
 You will need SoX. Please go here: [SoX](https://sourceforge.net/projects/sox/files/sox/)
 
-### Actual Installation of tvoip
+### General dependencies 
 
  - First you need to install a recent version of [NodeJS](https://nodejs.org/en/download/). 
  - Secondly you need git. [You can get it here](https://git-scm.com/downloads)
- - Now, from your terminal/command line:
+ - Finally you need node-gyp (installation differs for Linux, OS X and Win). [Follow these steps.](https://github.com/nodejs/node-gyp)
+
+### Actual installation of tvoip
+
+ - From your terminal/command line:
     - Clone this repository recursively: `git clone --recursive https://github.com/T-vK/tvoip.git`
     - Enter the project's directory: `cd tvoip`
     - Install and compile the dependencies: `npm i`
 
-### Questions, Feature requests, Pull Requests, etc
+### Questions, Feature requests, Pull Requests, Problems?
 
 Please open an issue [right here](https://github.com/T-vK/tvoip/issues) on Github.
