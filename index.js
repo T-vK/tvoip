@@ -1,8 +1,8 @@
 const program = require('commander')
 const net = require('net')
 const mic = require('mic')
-//const Speaker = require('speaker')
-const Speaker = require('./node-speaker')
+const Speaker = require('speaker')
+//const Speaker = require('./node-speaker')
 const package = require('./package.json')
 
 program
