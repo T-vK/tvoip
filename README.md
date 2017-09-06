@@ -7,7 +7,7 @@
 - [x] Get a speaker output stream
 - [x] Pipe a microphone input stream the the speaker output 
     - [x] On Ubuntu 16.04 LTS
-    - [ ] On Raspbian stretch
+    - [x] On Raspbian stretch
     - [x] On Fedora 26
 - [x] Pipe a microphone input stream over the network into another node process and pipe it from there to a speaker 
 - [ ] (Probably works; can't test yet) The above + the other way around (send+receive audio on both nodes at the same time)
@@ -51,8 +51,14 @@ tvoip is a simple terminal-based P2P VoIP application. Unlike Skype or similar a
 ### Dependencies (for the audio backend)
 
 #### If you are on Linux:
-You will need ALSA. The packages are usually called `libasound2-dev`, `alsa-base` and `alsa-utils`.  
-If you'Re on Debian, Ubuntu or similar, a simple `sudo apt-get install libasound2-dev alsa-base alsa-utils` should do the job for you.
+You will need ALSA.  
+
+ - Debian, Ubuntu, Raspbian etc.:
+    The packages are usually called `libasound2-dev`, `alsa-base` and `alsa-utils` on debian-like systems (`sudo apt-get install libasound2-dev alsa-base alsa-utils`).  
+ - Fedora and possibly other rpm based distros:
+    You find them as `alsa-lib-devel` `alsa-utils` and `alsa-lib` (`sudo dnf install alsa-lib-devel alsa-utils alsa-lib`)
+ - Other
+    Please use your favourite search engine to find out and report back if you got it to work. :)
 
 #### If you are on Mac OS X:
 You will need SoX. Please go here: [SoX](https://sourceforge.net/projects/sox/files/sox/)
