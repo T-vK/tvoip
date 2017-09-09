@@ -75,8 +75,8 @@ if (mode === 'listen') {
     })
     server.on('connection', socket => {
         console.log('A client has connected.')
-        micInputStream.pipe(socket) 
         socket.pipe(speakerInstance)
+        micInputStream.pipe(socket) 
         micInstance.start()
     })
     server.listen(program.listen, ()=>{
@@ -86,8 +86,8 @@ if (mode === 'listen') {
     const client = new net.Socket()
     client.connect({host: program.connect.split(':')[0], port: program.connect.split(':')[1]}, ()=>{
         console.log('Client connected')
-        micInputStream.pipe(client)
         client.pipe(speakerInstance)
+        micInputStream.pipe(client)
         micInstance.start()
     })
 }
