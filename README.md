@@ -10,7 +10,27 @@
     - [x] On Raspbian stretch
     - [x] On Fedora 26
 - [x] Pipe a microphone input stream over the network into another node process and pipe it from there to a speaker 
-- [ ] (Probably works; can't test yet) The above + the other way around (send+receive audio on both nodes at the same time)
+- [ ] The above + the other way around (send+receive audio on both nodes at the same time)
+
+I do not understand what I'm doing wrong atm. It seems like sending and receiving audio streams over the same TCP connection causes the problem, as the network-stream-test.js which just pipes the mic from one node to the other node's speaker works just fine. 
+
+Currently I'm fighting with this error: 
+
+```
+Received Info: Recording WAVE 'stdin' :
+Received Info: Signed 16 bit Little Endian, Rate 44100 Hz, Mono
+
+Speaker received stuff
+events.js:182
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: write() failed: 1384
+    at onwrite (/home/pi/projects/tvoip/node_modules/speaker/index.js:277:12)
+```
+
+[This issue](https://github.com/TooTallNate/node-speaker/issues/90) seems to be related.  
+I might be able to work around this problem by using two TCP connections instead of one.
    
 ## Description
 tvoip is a simple terminal-based P2P VoIP application. Unlike Skype or similar applications:
