@@ -71,7 +71,7 @@ if (mode === 'listen') {
     const server = net.createServer(socket=>{
     })
     server.on('error', err => {
-        throw err
+        console.error(err)
     })
     server.on('connection', socket => {
         console.log('A client has connected.')
