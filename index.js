@@ -33,8 +33,8 @@ let speakerConfig = { // | aplay -D plughw:NVidia,7
 }
 if (program.output)
     speakerConfig.device = program.output
-if (program['mic-channels'])
-    speakerConfig.device = program['mic-channels']
+if (program['speaker-channels'])
+    speakerConfig.channels = parseInt(program['speaker-channels'])
 
 let micConfig = {       // arecord -D hw:0,0 -f S16_LE -r 44100 -c 2
     //device: program.input,    // -D hw:0,0
@@ -42,13 +42,13 @@ let micConfig = {       // arecord -D hw:0,0 -f S16_LE -r 44100 -c 2
     bitwidth: '16',             //               16
     endian: 'little',           //                 _LE
     rate: '44100',              //                     -r 44100
-    channels: '2',              //                              -c 2
+    channels: '1',              //                              -c 2
     debug: true
 }
 if (program.input)
     micConfig.device = program.input
-if (program['speaker-channels'])
-    speakerConfig.device = program['speaker-channels']
+if (program['mic-channels'])
+    speakerConfig.channels = program['mic-channels']
 
 const micInstance = mic(micConfig)
 const micInputStream = micInstance.getAudioStream()
