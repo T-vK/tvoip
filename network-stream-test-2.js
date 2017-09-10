@@ -53,10 +53,12 @@ if (program.input)
 console.log('Mode: ' + mode)
 
 if (mode === 'listen') {
-    const speakerInstance = new Speaker(speakerConfig)
-    speakerInstance.on('open', ()=>{
-        console.log("Speaker received stuff")
-    })
+    const micInstance = mic(micConfig)
+    const micInputStream = micInstance.getAudioStream()
+    //const speakerInstance = new Speaker(speakerConfig)
+    //speakerInstance.on('open', ()=>{
+    //    console.log("Speaker received stuff")
+    //})
     
     const server = net.createServer(socket=>{
         //micInputStream.pipe(socket) 
@@ -78,8 +80,12 @@ if (mode === 'listen') {
         console.log('Server is listening')
     })
 } else {
-    const micInstance = mic(micConfig)
-    const micInputStream = micInstance.getAudioStream()
+    const speakerInstance = new Speaker(speakerConfig)
+    speakerInstance.on('open', ()=>{
+        console.log("Speaker received stuff")
+    })
+    //const micInstance = mic(micConfig)
+    //const micInputStream = micInstance.getAudioStream()
     
     const client = new net.Socket()
     client.connect({host: program.connect.split(':')[0], port: program.connect.split(':')[1]}, ()=>{
