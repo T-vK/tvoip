@@ -42,7 +42,7 @@ let micConfig = {       // arecord -D hw:0,0 -f S16_LE -r 44100 -c 2
     bitwidth: '16',             //               16
     endian: 'little',           //                 _LE
     rate: '44100',              //                     -r 44100
-    channels: '1',              //                              -c 2
+    channels: '2',              //                              -c 2
     debug: true
 }
 if (program.input)
