@@ -69,9 +69,6 @@ if (mode === 'listen') {
         console.log('A client has connected.')
         socket.pipe(speakerInstance)
 	micInputStream.pipe(socket)
-        //micInputStream.on('error', err => {
-        //    cosole.log("Error in Input Stream: " + err)
-        //})
         micInstance.start()
     })
     server.listen(program.listen, ()=>{
@@ -82,9 +79,6 @@ if (mode === 'listen') {
     client.connect({host: program.connect.split(':')[0], port: program.connect.split(':')[1]}, ()=>{
         console.log('Client connected')
         micInputStream.pipe(client)
-        //micInputStream.on('error', err => {
-        //    cosole.log("Error in Input Stream: " + err)
-        //})
         micInstance.start()
 	client.pipe(speakerInstance)
     })
