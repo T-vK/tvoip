@@ -42,6 +42,8 @@ tvoip is a simple terminal-based P2P VoIP application. Unlike Skype or similar a
     -o, --output [device-name]      Output device, (Leave empty to use the default playback device.)
     -a, --mic-channels <count>      Number of channels 1=mono; 2=stereo (Leave empty to use 1.)
     -b, --speaker-channels <count>  Number of channels 1=mono; 2=stereo (Leave empty to use 2.)
+    -d, --debug <bool>              true to enable debug, false to disable debug. (Leave empty to not use debug.)
+    -g, --log <file>                Log to file
     -h, --help                      output usage information
 
   Examples:
