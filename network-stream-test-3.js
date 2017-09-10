@@ -60,47 +60,31 @@ micInputStream.on('error', err => {
 console.log('Mode: ' + mode)
 
 if (mode === 'listen') {
-    //const micInstance = mic(micConfig)
-    //const micInputStream = micInstance.getAudioStream()
-    //const speakerInstance = new Speaker(speakerConfig)
-    //speakerInstance.on('open', ()=>{
-    //    console.log("Speaker received stuff")
-    //})
-    
     const server = net.createServer(socket=>{
-        //micInputStream.pipe(socket) 
-        //socket.pipe(speakerInstance)
     })
     server.on('error', err => {
-        throw err
+        console.error(err)
     })
     server.on('connection', socket => {
         console.log('A client has connected.')
         socket.pipe(speakerInstance)
 	micInputStream.pipe(socket)
-        micInputStream.on('error', err => {
-            cosole.log("Error in Input Stream: " + err)
-        })
+        //micInputStream.on('error', err => {
+        //    cosole.log("Error in Input Stream: " + err)
+        //})
         micInstance.start()
     })
     server.listen(program.listen, ()=>{
         console.log('Server is listening')
     })
 } else {
-    //const speakerInstance = new Speaker(speakerConfig)
-    //speakerInstance.on('open', ()=>{
-    //    console.log("Speaker received stuff")
-    //})
-    //const micInstance = mic(micConfig)
-    //const micInputStream = micInstance.getAudioStream()
-    
     const client = new net.Socket()
     client.connect({host: program.connect.split(':')[0], port: program.connect.split(':')[1]}, ()=>{
         console.log('Client connected')
         micInputStream.pipe(client)
-        micInputStream.on('error', err => {
-            cosole.log("Error in Input Stream: " + err)
-        })
+        //micInputStream.on('error', err => {
+        //    cosole.log("Error in Input Stream: " + err)
+        //})
         micInstance.start()
 	client.pipe(speakerInstance)
     })
