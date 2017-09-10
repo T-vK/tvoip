@@ -50,44 +50,103 @@ if (program.input)
 if (program['mic-channels'])
     speakerConfig.channels = program['mic-channels']
 
-const micInstance = mic(micConfig)
-const micInputStream = micInstance.getAudioStream()
-const speakerInstance = new Speaker(speakerConfig)
+//const micInstance = mic(micConfig)
+//const micInputStream = micInstance.getAudioStream()
 
-speakerInstance.on('open', ()=>{
-    console.log("Speaker received stuff")
-})
+function playStream(stream) {
+    let speakerInstance = new Speaker(speakerConfig)
+    speakerInstance.on('open', ()=>{
+        console.log("Speaker event: open")
+    })
+    speakerInstance.on('flush', ()=>{
+        console.log("Speaker event: flush")
+    })
+    speakerInstance.on('close', ()=>{
+        console.log("Speaker event: close")
+    stream.destroy()
+    speakerInstance.destroy()
+    //speakerInstance = undefined
+    })
+    stream.pipe(speakerInstance)
+}
 
 //micInputStream.on('data', data => {
 //    console.log("Recieved Input Stream: " + data.length)
 //})
-micInputStream.on('error', err => {
-    cosole.log("Error in Input Stream: " + err)
-})
+//micInputStream.on('error', err => {
+//    console.error("MIC-ERROR: Error in Input Stream: " + err)
+//})
 
 console.log('Mode: ' + mode)
 
-if (mode === 'listen') {
-    const server = net.createServer(socket=>{
+function setupTvoipStream(socket) {
+    let micInstance = mic(micConfig)
+    let micInputStream = micInstance.getAudioStream()
+    //micInputStream.on('data', data => {
+    //    console.log("Recieved Input Stream: " + data.length)
+    //})
+    micInputStream.on('error', err => {
+        console.error("MIC-ERROR: Error in Input Stream: " + err)
     })
+    //playStream(socket)
+    //socket.pipe(speakerInstance)
+    let speakerInstance = new Speaker(speakerConfig)
+    speakerInstance.on('open', () => {
+        console.log("Speaker event: open")
+    })
+    speakerInstance.on('flush', () => {
+        console.log("Speaker event: flush")
+    })
+    speakerInstance.on('close', () => {
+        console.log("Speaker event: close")
+    })
+    socket.pipe(speakerInstance)
+
+    micInputStream.pipe(socket) 
+    micInstance.start()
+    socket.on('close', had_error => {
+        micInstance.stop()
+	micInputStream.destroy()
+	micInputStream = undefined
+        micInstance = undefined
+        socket.destroy()
+        speakerInstance.destroy()
+        speakerInstance = undefined
+    })
+    socket.on('end', () => {
+        speakerInstance.destroy()
+    })
+    socket.on('error', error => {
+        console.error("Server socket error: " + error)
+    })
+}
+
+
+if (mode === 'listen') {
+    const server = net.createServer()
     server.on('error', err => {
-        console.error(err)
+        console.error('Socket error: ' + err)
     })
     server.on('connection', socket => {
         console.log('A client has connected.')
-        socket.pipe(speakerInstance)
-        micInputStream.pipe(socket) 
-        micInstance.start()
+        setupTvoipStream(socket)
     })
-    server.listen(program.listen, ()=>{
+    server.listen(program.listen, () => {
         console.log('Server is listening')
     })
 } else {
-    const client = new net.Socket()
-    client.connect({host: program.connect.split(':')[0], port: program.connect.split(':')[1]}, ()=>{
-        console.log('Client connected')
-        micInputStream.pipe(client)
-        micInstance.start()
-        client.pipe(speakerInstance)
-    })
+    function tvoipConnect(host, port) {
+        const client = new net.Socket()
+        client.on('close', () => {
+            tvoipConnect(host, port)
+        })
+        client.connect({host: host, port: port}, ()=>{
+            console.log('Connected to server.')
+            setupTvoipStream(client)
+        })
+    }
+    
+    const host = program.connect.split(':')[0]
+    const port = program.connect.split(':')[1]
+    tvoipConnect(host, port)
 }
