@@ -45,20 +45,27 @@ let micConfig = {       // arecord -D hw:0,0 -f S16_LE -r 44100 -c 2
 if (program.input)
     micConfig.device = program.input
 
-//const micInstance = mic(micConfig)
-//const micInputStream = micInstance.getAudioStream()
-//const speakerInstance = new Speaker(speakerConfig)
+const micInstance = mic(micConfig)
+const micInputStream = micInstance.getAudioStream()
+const speakerInstance = new Speaker(speakerConfig)
 
+speakerInstance.on('open', ()=>{
+    console.log("Speaker received stuff")
+})
+
+micInputStream.on('error', err => {
+    cosole.log("Error in Input Stream: " + err)
+})
 
 console.log('Mode: ' + mode)
 
 if (mode === 'listen') {
-    const micInstance = mic(micConfig)
-    const micInputStream = micInstance.getAudioStream()
-    const speakerInstance = new Speaker(speakerConfig)
-    speakerInstance.on('open', ()=>{
-        console.log("Speaker received stuff")
-    })
+    //const micInstance = mic(micConfig)
+    //const micInputStream = micInstance.getAudioStream()
+    //const speakerInstance = new Speaker(speakerConfig)
+    //speakerInstance.on('open', ()=>{
+    //    console.log("Speaker received stuff")
+    //})
     
     const server = net.createServer(socket=>{
         //micInputStream.pipe(socket) 
@@ -80,12 +87,12 @@ if (mode === 'listen') {
         console.log('Server is listening')
     })
 } else {
-    const speakerInstance = new Speaker(speakerConfig)
-    speakerInstance.on('open', ()=>{
-        console.log("Speaker received stuff")
-    })
-    const micInstance = mic(micConfig)
-    const micInputStream = micInstance.getAudioStream()
+    //const speakerInstance = new Speaker(speakerConfig)
+    //speakerInstance.on('open', ()=>{
+    //    console.log("Speaker received stuff")
+    //})
+    //const micInstance = mic(micConfig)
+    //const micInputStream = micInstance.getAudioStream()
     
     const client = new net.Socket()
     client.connect({host: program.connect.split(':')[0], port: program.connect.split(':')[1]}, ()=>{
