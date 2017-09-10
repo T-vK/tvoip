@@ -1,6 +1,6 @@
 # Terminal-based P2P VoIP communication
 
-## This is still a work in progress. It should basically work on Linux. I have not been able to fully test it yet, though.
+## Todo list
 
 - [x] Get a microphone input stream
 - [x] Get a custom version of the `speaker` module which allows specifiying the output device. ([See here](https://github.com/T-vK/node-speaker/tree/select-audio-device))
@@ -12,8 +12,13 @@
 - [x] Pipe a microphone input stream over the network into another node process and pipe it from there to a speaker 
 - [x] The above + the other way around (send+receive audio on both nodes at the same time)
 - [x] Allow connecter to reconnect to listener, after connector disconnected or crashed.
-- [ ] Allow connecter to reconnect to listener, after listener disconnected or crashed. (Untested)
-   
+- [x] Allow connecter to reconnect to listener, after listener disconnected or crashed. (Untested)
+- [x] Test it on Linux
+- [ ] Test it on Mac OS X (can't; don't own a device)
+- [ ] Test it on Windows 
+
+On Linux it should work fine. At least for me it does.
+
 ## Description
 tvoip is a simple terminal-based P2P VoIP application. Unlike Skype or similar applications:
 

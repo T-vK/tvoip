@@ -17,11 +17,6 @@ program
   //.option('-m, --microphone-enabled', 'Microphone enabled initially. (true or false)', true)
   .parse(process.argv)
 
-console.log('--connect: ' + program.connect)
-console.log('--listen: ' + program.listen)
-console.log('--input: ' + program.input)
-console.log('--output: ' + program.output)
-
 const mode = !program.connect ? 'listen' : 'connect'
 
 let speakerConfig = { // | aplay -D plughw:NVidia,7
@@ -50,36 +45,16 @@ if (program.input)
 if (program['mic-channels'])
     speakerConfig.channels = program['mic-channels']
 
-//const micInstance = mic(micConfig)
-//const micInputStream = micInstance.getAudioStream()
-
-function playStream(stream) {
-    let speakerInstance = new Speaker(speakerConfig)
-    speakerInstance.on('open', ()=>{
-        console.log("Speaker event: open")
-    })
-    speakerInstance.on('flush', ()=>{
-        console.log("Speaker event: flush")
-    })
-    speakerInstance.on('close', ()=>{
-        console.log("Speaker event: close")
-    stream.destroy()
-    speakerInstance.destroy()
-    //speakerInstance = undefined
-    })
-    stream.pipe(speakerInstance)
-}
-
-//micInputStream.on('data', data => {
-//    console.log("Recieved Input Stream: " + data.length)
-//})
-//micInputStream.on('error', err => {
-//    console.error("MIC-ERROR: Error in Input Stream: " + err)
-//})
-
 console.log('Mode: ' + mode)
+console.log('\nSpeaker config')
+console.log(speakerConfig)
+console.log('\nMic config')
+console.log(micConfig)
 
 function setupTvoipStream(socket) {
+    socket.on('error', error => {
+        console.error("Socket error: " + error)
+    })
     let micInstance = mic(micConfig)
     let micInputStream = micInstance.getAudioStream()
     //micInputStream.on('data', data => {
@@ -116,13 +91,11 @@ function setupTvoipStream(socket) {
     socket.on('end', () => {
         speakerInstance.destroy()
     })
-    socket.on('error', error => {
-        console.error("Server socket error: " + error)
-    })
 }
 
 
 if (mode === 'listen') {
+    console.log('--listen: ' + program.listen)
     const server = net.createServer()
     server.on('error', err => {
         console.error('Socket error: ' + err)
@@ -135,18 +108,34 @@ if (mode === 'listen') {
         console.log('Server is listening')
     })
 } else {
+    const host = program.connect.split(':')[0]
+    const port = program.connect.split(':')[1]
+    console.log('Host: ' + host)
+    console.log('Port: ' + port)
+
     function tvoipConnect(host, port) {
         const client = new net.Socket()
         client.on('close', () => {
-            tvoipConnect(host, port)
+            console.log('Closed, reconnect in 4s')
+	    setTimeout(() => {
+                tvoipConnect(host, port)
+	    }, 4000)
+            //tvoipConnect(host, port)
         })
+        client.on('error', err => {
+            if(err.code == 'ECONNREFUSED') {
+                //console.log('Closed, reconnect in 4s')
+                //setTimeout(() => {
+                //    tvoipConnect(host, port)
+		//}, 4000)
+            }
+            console.error("Client socket error: " + err)
+	})
         client.connect({host: host, port: port}, ()=>{
             console.log('Connected to server.')
             setupTvoipStream(client)
         })
     }
     
-    const host = program.connect.split(':')[0]
-    const port = program.connect.split(':')[1]
     tvoipConnect(host, port)
 }
